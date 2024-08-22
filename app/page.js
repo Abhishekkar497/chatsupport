@@ -1,17 +1,26 @@
 "use client";
 
 import { Box, Button, Stack, TextField } from "@mui/material";
-import { useState, useEffect, useRef, setIsLoading } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function Home() {
+  const messagesEndRef = useRef(null);
+  const [message, setMessage] = useState("");
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const [messages, setMessages] = useState([
     {
       role: "assistant",
       content:
-        "Hi! I'm the Headstarter support assistant. How can I help you today?",
+        "Hi! I'm the Harmony support assistant. How can I help you today?",
     },
   ]);
-  const [message, setMessage] = useState("");
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const sendMessage = async () => {
     const sendMessage = async () => {
@@ -68,25 +77,8 @@ export default function Home() {
         ]);
       }
     };
-    //setIsLoading(false);
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      sendMessage();
-    }
-  };
-
-  const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
   return (
     <Box
       width="100vw"
@@ -144,7 +136,6 @@ export default function Home() {
           <Button variant="contained" onClick={sendMessage}>
             Send
           </Button>
-          <div ref={messagesEndRef} />
         </Stack>
       </Stack>
     </Box>
